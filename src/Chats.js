@@ -12,6 +12,24 @@ import Chat from "./Chat.js"
 const ongoingChats = [
   { userID: "mantinglin", displayName: "Tinglin Man" },
   { userID: "luoxiaolei", displayName: "Xiaolei Luo" },
+  { userID: "mantinglin", displayName: "Tinglin Man" },
+  { userID: "luoxiaolei", displayName: "Xiaolei Luo" },
+  { userID: "mantinglin", displayName: "Tinglin Man" },
+  { userID: "luoxiaolei", displayName: "Xiaolei Luo" },
+  { userID: "mantinglin", displayName: "Tinglin Man" },
+  { userID: "luoxiaolei", displayName: "Xiaolei Luo" },
+  { userID: "mantinglin", displayName: "Tinglin Man" },
+  { userID: "luoxiaolei", displayName: "Xiaolei Luo" },
+  { userID: "mantinglin", displayName: "Tinglin Man" },
+  { userID: "luoxiaolei", displayName: "Xiaolei Luo" },
+  { userID: "mantinglin", displayName: "Tinglin Man" },
+  { userID: "luoxiaolei", displayName: "Xiaolei Luo" },
+  { userID: "mantinglin", displayName: "Tinglin Man" },
+  { userID: "luoxiaolei", displayName: "Xiaolei Luo" },
+  { userID: "mantinglin", displayName: "Tinglin Man" },
+  { userID: "luoxiaolei", displayName: "Xiaolei Luo" },
+  { userID: "mantinglin", displayName: "Tinglin Man" },
+  { userID: "luoxiaolei", displayName: "Xiaolei Luo" },
 ];
 
 function Chats() {
@@ -31,8 +49,9 @@ function Chats() {
         <Box height="7%" align="center" justify="center" margin={{ left: "-5px" }}>
           <Text weight="bold" size="16px">Chats</Text>
         </Box>
-        <List data={ongoingChats} pad={{ }}>
-          {(chat, index) => (
+        <Box overflow="auto">
+          <List data={ongoingChats} margin={{ top: "px" }} pad={{ }}>
+            {(chat, index) => (
               <Button fill onClick={() => setChatIdx(index)} focusIndicator={false} style={{ backgroundColor: index == chatIdx ? "#F0F0F0" : "white" }}>
                 <Box height="75px" pad={{ left: "10px", right: "15px" }}>
                   <Grid
@@ -62,8 +81,9 @@ function Chats() {
                   </Grid>
                 </Box>
               </Button>
-          )}
-        </List>
+            )}
+          </List>
+        </Box>
       </Box>
       <Box gridArea="main" width={{ min: "600px" }}>
         <Chat chatInfo={chatIdx != -1 ? ongoingChats[chatIdx] : null} />
