@@ -22,22 +22,27 @@ var chatService = require('./conversationServer/chatServer')
 
 
 var serverId = 'msgServer1'
+let local_session = new Map()
 
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
 });
 
-function fakeAuth(jwt) {
+function fakeAuth(jwt: String) {
     return jwt
 }
 
-io.on('connection', (socket) => {
+function getSocketUid(socketId: String) {
+    return local_session.get(socketId)['uid']
+}
+
+io.on('connection', (socket: SocketIO.Socket) => {
     //io.emit("newConn", "asddasadsasd")
-    //console.log("New connection: %s", socket)
     //{'cId': conversationId, 'message': {'type': str, 'payload': data}}
     socket.on('chatMessage', (data) => {
         let _ts = Date.now()
-        data['message'].timestamp = _ts
+        data['message']['timestamp'] = _ts
+        data['message']['from'] = getSocketUid(socket.id)
         console.log(data)
         chatService.addChatTo(data['cId'], data['message'])
         io.to(data['cId']).emit('chatMessage',data['message'])
@@ -46,11 +51,11 @@ io.on('connection', (socket) => {
     //{'token': jwtToken}
     socket.on('connection', (data) => {
         console.log("New connection: %s",data)
-        //let uid = fakeAuth(data)
-        //cache.fakeCache[uid] = serverId
+        let uid = fakeAuth(data)
+        local_session[socket.id] = {'uid': uid}
     })
 
-    //{'cIds': [conversationId], 'timestamps': [messageIdOfLastSeen]}
+    //{'cIds': [conversationId], 'timestamps': [timestampOfLastSeen]}
     socket.on('fetchChat', (data) => {
         console.log(data)
         let cIds = data['cIds']
