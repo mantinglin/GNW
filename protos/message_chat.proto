@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package ChatService;
+
+service ChatService {
+  rpc FetchOfflineChat (stream OfflineChatRequest) returns (stream OfflineChatReply) {}
+  rpc NewMessage (NewMessageRequest) returns (IsSuccessful) {}
+}
+
+message SingleChat {
+  string type = 1;
+  string payload = 2;
+}
+
+message NewMessageRequest {
+  string cId = 1;
+  SingleChat msg = 2;
+}
+
+message IsSuccessful {
+  int32 status = 1;
+}
+
+message OfflineChatReply {
+    string cId = 1;
+    repeated SingleChat msgs = 2;
+}
+
+message OfflineChatRequest {
+    string cId = 1;
+    int32 timestamp = 2;
+}

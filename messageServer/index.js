@@ -1,25 +1,10 @@
+
+
 var app = require('express')();
 var http = require('http').createServer(app);
 var io = require('socket.io')(http);
 
-var cache = require('./cache/cache')
-var chatService = require('./conversationServer/chatServer')
-// var firebase = require("firebase/app");
-// var firestore = require("firebase/firestore");
-
-// var firebaseConfig = {
-//     apiKey: "AIzaSyCvPH0-BlduvaKqgPDQGT8qpn8S-g40gGs",
-//     authDomain: "im-server-50ced.firebaseapp.com",
-//     databaseURL: "https://im-server-50ced.firebaseio.com",
-//     projectId: "im-server-50ced",
-//     storageBucket: "im-server-50ced.appspot.com",
-//     messagingSenderId: "493840400213",
-//     appId: "1:493840400213:web:31061332eeb4038c2739dc"
-// };
-// firebase.initializeApp(firebaseConfig);
-
-// firebase.firestore().collection()
-
+var chatService = require('../conversationServer/chatServer')
 
 var serverId = 'msgServer1'
 let local_session = new Map()
@@ -28,16 +13,15 @@ app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
 });
 
-function fakeAuth(jwt: String) {
+function fakeAuth(jwt) {
     return jwt
 }
 
-function getSocketUid(socketId: String) {
+function getSocketUid(socketId) {
     return local_session.get(socketId)['uid']
 }
 
-io.on('connection', (socket: SocketIO.Socket) => {
-    //io.emit("newConn", "asddasadsasd")
+io.on('connection', (socket) => {
     //{'cId': conversationId, 'message': {'type': str, 'payload': data}}
     socket.on('chatMessage', (data) => {
         let _ts = Date.now()

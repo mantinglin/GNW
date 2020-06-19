@@ -4,6 +4,7 @@
 <script>
     $(function () {
       var socket = io();
+      socket.emit('connection', {'uid': 'whoimi'})
       socket.on('*', function (msg) {
           $('#messages').append($('<li>').text(msg));
       });
