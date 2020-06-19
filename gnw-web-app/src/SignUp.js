@@ -1,13 +1,8 @@
 import React, {Component} from 'react';
 import TextField from '@material-ui/core/TextField';
-
 import {makeStyles} from "@material-ui/core/styles";
 import Button from '@material-ui/core/Button';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
-
-
-
-
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -67,17 +62,6 @@ export default function BasicTextFields() {
                     style={{ margin: 8}}
                     placeholder="Email"
                 />
-                {/*Select Birthday*/}
-                {/*<TextField*/}
-                {/*    id="date"*/}
-                {/*    label="Birthday"*/}
-                {/*    type="date"*/}
-                {/*    className={classes.textField}*/}
-                {/*    defaultValue="2020-06-18"*/}
-                {/*    InputLabelProps={{*/}
-                {/*        shrink: true,*/}
-                {/*    }}*/}
-                {/*    />*/}
             </form>
             <Button
                 variant="contained"
@@ -87,11 +71,6 @@ export default function BasicTextFields() {
             >
                 Submit
             </Button>
-
         </div>
-
-
-
     );
 }
-
