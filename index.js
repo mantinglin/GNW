@@ -3,7 +3,7 @@ var http = require('http').createServer(app);
 var io = require('socket.io')(http);
 
 var cache = require('./cache/cache')
-
+var chatService = require('./conversationServer/chatServer')
 // var firebase = require("firebase/app");
 // var firestore = require("firebase/firestore");
 
@@ -32,11 +32,14 @@ function fakeAuth(jwt) {
 }
 
 io.on('connection', (socket) => {
-    io.emit("newConn", "asddasadsasd")
+    //io.emit("newConn", "asddasadsasd")
     //console.log("New connection: %s", socket)
-    //{'target': conversationId, 'type': ['text', ...],'message': content}
+    //{'cId': conversationId, 'message': {'type': str, 'payload': data}}
     socket.on('chatMessage', (data) => {
+        let _ts = Date.now()
+        data['message'].timestamp = _ts
         console.log(data)
+        chatService.addChatTo(data['cId'], data['message'])
         io.to(data['cId']).emit('chatMessage',data['message'])
     });
 
@@ -47,14 +50,18 @@ io.on('connection', (socket) => {
         //cache.fakeCache[uid] = serverId
     })
 
-    //{'cIds': [conversationId], 'lastSeen': [messageIdOfLastSeen]}
+    //{'cIds': [conversationId], 'timestamps': [messageIdOfLastSeen]}
     socket.on('fetchChat', (data) => {
         console.log(data)
         let cIds = data['cIds']
+        let timestamps = data['timestamps']
+        let chatToPush = {}
         for(let c=0;c<cIds.length;c++) {
             console.log("Joining %s", cIds[c])
             socket.join(cIds[c])
+            chatToPush[cIds[c]] = chatService.getChatAfter(cIds[c], timestamps[c])
         }
+        socket.emit('fetchChat', chatToPush)
     })
 });
 

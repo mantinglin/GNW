@@ -3,46 +3,61 @@
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script>
     $(function () {
-        var socket = io();
-        $('form').submit(function (e) {
-            e.preventDefault(); // prevents page reloading
-            dobj = {
-              'cId': $('#c').val(),
-              'cIds': [$('#c').val()],
-              'message': $('#m').val()
-            }
-            console.log(dobj)
-            socket.emit($('#e').val(), dobj);
-            //$('#m').val('');
-            return false;
-        });
-        socket.on('*', function (msg) {
-            $('#messages').append($('<li>').text(msg));
-        });
-        socket.on('chatMessage', function (msg) {
+      var socket = io();
+      socket.on('*', function (msg) {
+          $('#messages').append($('<li>').text(msg));
+      });
+      socket.on('chatMessage', function (msg) {
         $('#messages').append($('<li>').text(msg));
       });
+      socket.on('fetchChat', function (msg) {
+        for(let i in msg) {
+          $('#messages').append($('<li>').text("Chat room"+i))
+            console.log(msg[i])
+          for(let l = 0;l<msg[i].length;l++) {
+            $('#messages').append($('<li>').text(msg[i][l]['payload']))
+          }
+        }
+        
+      });
+      $("#fetchChat").click(
+        function () {
+          socket.emit('fetchChat', {
+            cIds:[1,2], 
+            timestamps:[0,10]
+          })
+        }
+      )
+      $("#chatMessage").click(
+        function () {
+          socket.emit('chatMessage', {
+            cId: 1,
+            message: {type: 'text', payload: 'ruaruarua'}
+          })
+        }
+      )
+      $("#connection").click(
+        function () {
+          socket.emit('connection', {})
+        }
+      )
     });
+
+    
 </script>
 <html>
   <head>
     <title>Socket.IO chat</title>
-    <style>
-      * { margin: 0; padding: 0; box-sizing: border-box; }
-      body { font: 13px Helvetica, Arial; }
-      form { background: #000; padding: 3px; position: fixed; bottom: 0; width: 100%; }
-      form input { border: 0; padding: 10px; width: 90%; margin-right: 0.5%; }
-      form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
-      #messages { list-style-type: none; margin: 0; padding: 0; }
-      #messages li { padding: 5px 10px; }
-      #messages li:nth-child(odd) { background: #eee; }
-    </style>
   </head>
   <body>
     <ul id="messages"></ul>
-    <form action="">
+    <!-- <form action="">
       
       <input id="e" autocomplete="off" /><input id="c" autocomplete="off" /><input id="m" autocomplete="off" /><button>Send</button>
-    </form>
+    </form> -->
+    <div id="fetchChat">fetchChat</div>
+<div id="chatMessage">chatMessage</div>
+<div id="connection">connection</div>
+
   </body>
 </html>
