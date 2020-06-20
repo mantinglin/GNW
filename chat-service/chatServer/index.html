@@ -1,0 +1,64 @@
+<!doctype html>
+<script src="/socket.io/socket.io.js"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script>
+    $(function () {
+      var socket = io();
+      socket.emit('connection', {'uid': 'whoimi'})
+      socket.on('*', function (msg) {
+          $('#messages').append($('<li>').text(msg));
+      });
+      socket.on('chatMessage', function (msg) {
+        $('#messages').append($('<li>').text(msg));
+      });
+      socket.on('fetchChat', function (msg) {
+        for(let i in msg) {
+          $('#messages').append($('<li>').text("Chat room"+i))
+            console.log(msg[i])
+          for(let l = 0;l<msg[i].length;l++) {
+            $('#messages').append($('<li>').text(msg[i][l]['payload']))
+          }
+        }
+        
+      });
+      $("#fetchChat").click(
+        function () {
+          socket.emit('fetchChat', {
+            cIds:[1,2], 
+            timestamps:[0,10]
+          })
+        }
+      )
+      $("#chatMessage").click(
+        function () {
+          socket.emit('chatMessage', {
+            cId: 1,
+            message: {type: 'text', payload: 'ruaruarua'}
+          })
+        }
+      )
+      $("#connection").click(
+        function () {
+          socket.emit('connection', {})
+        }
+      )
+    });
+
+    
+</script>
+<html>
+  <head>
+    <title>Socket.IO chat</title>
+  </head>
+  <body>
+    <ul id="messages"></ul>
+    <!-- <form action="">
+      
+      <input id="e" autocomplete="off" /><input id="c" autocomplete="off" /><input id="m" autocomplete="off" /><button>Send</button>
+    </form> -->
+    <div id="fetchChat">fetchChat</div>
+<div id="chatMessage">chatMessage</div>
+<div id="connection">connection</div>
+
+  </body>
+</html>
