@@ -1,0 +1,8 @@
+{
+  "name": "chat-data-service",
+  "version": "0.0.1",
+  "description": "store chat messages and provide them when user get online",
+  "dependencies": {
+    "grpc": "^1.24.3",
+  }
+}

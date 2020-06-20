@@ -1,10 +1,9 @@
 {
-  "name": "socket-chat-example",
+  "name": "chat-service",
   "version": "0.0.1",
-  "description": "my first socket.io app",
+  "description": "chat service, forward chat message to online people and store them to chat-data-service",
   "dependencies": {
     "express": "^4.17.1",
-    "firebase": "^7.15.1",
     "grpc": "^1.24.3",
     "socket.io": "^2.3.0"
   }
