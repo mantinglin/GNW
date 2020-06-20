@@ -23,19 +23,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SignUp() {
+export default function Login() {
   const classes = useStyles();
   
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [displayName, setDisplayName] = useState("");
-  const [email, setEmail] = useState("");
 
   const [login, setLogin] = useState(false);
   const [user, setUser] = useState(null);
   
-  const logIn = () => {
-    fetch("http://localhost:8080/signUp", {
+  const loginFn = () => {
+    fetch("http://localhost:8080/login", {
       method: 'POST',
       headers: {
         'content-type': 'application/json',
@@ -43,8 +41,6 @@ export default function SignUp() {
       body: JSON.stringify({
         username: username,
         password: password,
-        displayName: displayName,
-        email: email,
       }),
     })
     .then(res =>  {
@@ -94,37 +90,17 @@ export default function SignUp() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        {/*Enter Display_Name*/}
-        <TextField
-          required
-          id="standard-required"
-          label="Display Name"
-          style={{ margin: 8 }}
-          placeholder="Display Name"
-          value={displayName}
-          onChange={(e) => setDisplayName(e.target.value)}
-        />
-        {/*Enter Email*/}
-        <TextField
-          required
-          id="standard-required"
-          label="Email"
-          style={{ margin: 8 }}
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
       </form>
       <Button
         variant="contained"
         color="primary"
         style={{ margin: 8 }}
         startIcon={<CloudUploadIcon />}
-        onClick={logIn}
+        onClick={loginFn}
       >
         Submit
       </Button>
-      <Link to="/">Login</Link>
+      <Link to="/signUp">Sign Up</Link>
       {login &&
         <Redirect to={{
           pathname: '/chat',
