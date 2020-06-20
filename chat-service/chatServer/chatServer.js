@@ -1,10 +1,8 @@
-
-
 var app = require('express')();
 var http = require('http').createServer(app);
 var io = require('socket.io')(http);
 
-var chatService = require('../conversationServer/chatServer')
+var chatService = require('../chatDataServer/chatDataServer')
 
 var serverId = 'msgServer1'
 let local_session = new Map()
