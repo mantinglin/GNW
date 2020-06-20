@@ -1,4 +1,4 @@
-const PROTO_PATH = './protos/message_chat.proto'
+const PROTO_PATH = '../protos/message_chat.proto'
 
 var grpc = require('grpc');
 var protoLoader = require('@grpc/proto-loader');
